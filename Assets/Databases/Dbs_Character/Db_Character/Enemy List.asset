@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Enemy List
   m_EditorClassIdentifier: Assembly-CSharp::App.BaseSystem.DataStores.ScriptableObjects.Status.Db_Ch_StatusDataBase
   itemList:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: f0be3a7fe6d12ca45a4a4972e39afd24, type: 2}
+  - {fileID: 11400000, guid: 77b04ce5245cb614c8a5fd035f1a2891, type: 2}

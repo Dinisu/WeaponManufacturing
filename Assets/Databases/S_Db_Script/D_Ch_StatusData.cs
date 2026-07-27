@@ -159,18 +159,15 @@ namespace App.BaseSystem.DataStores.ScriptableObjects.Status
 
         [SerializeField, Header("キャラクター")]
         public GameObject Character;
-        public GameObject B_Character;
-        public GameObject B_Icon;
-        public GameObject B_Icon_Ch;
-        public GameObject Icon_Character1;
-        public GameObject Icon_Character2;
+        [SerializeField, Header("データアイコン画像")]
+        public Sprite DataIcon;
 
         [SerializeField, Header("ドロップ用アイテムリスト")]
         public List<Droppedable> DroppedItems = new List<Droppedable>();
 
         [System.Serializable]
-        // 各レベルに達するまでの必要経験値が入っている内部クラス
-        public class Droppedable//現在のLevelが参照する変数位置になる、LevelExp[Level]
+        
+        public class Droppedable
         {
             public D_It_StatusData DroppedItem;
             public int Droprate;

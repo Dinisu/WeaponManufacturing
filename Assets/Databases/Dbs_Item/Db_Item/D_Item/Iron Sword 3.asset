@@ -25,7 +25,7 @@ MonoBehaviour:
     MaxMpup: 0
     Attackup: 10
     Magicup: 0
-    Defenceup: 0
+    Defenseup: 0
     MagicDefenseup: 0
     Speedup: 0
     Criticalup: 0
@@ -33,7 +33,7 @@ MonoBehaviour:
   efficacy2: 0
   criticalRate: 0
   duration: 0
-  number: 1
+  number: 0
   price: 0
   DataIcon: {fileID: -65725288881123977, guid: ff7a83b3f05541a449c60d6fc92a13c0, type: 3}
   Effect: {fileID: 0}

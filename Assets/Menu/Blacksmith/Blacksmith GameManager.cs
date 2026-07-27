@@ -158,6 +158,9 @@ public class BlacksmithGameManager : MonoBehaviour
 
         yield return new WaitForSeconds(3f);
 
+        //選択中の素材を削除する
+        StartCoroutine(blacksmithManager.AfterForging());
+
         SystemBanner.SetActive(true);
         finishedProductText.text = "";
     }
@@ -228,9 +231,6 @@ public class BlacksmithGameManager : MonoBehaviour
         Debug.Log($"成功:{successCount}");
         Debug.Log($"大成功:{greatCount}");
         Debug.Log($"スコア:{score}");
-
-        //選択中の素材を削除する
-        StartCoroutine(blacksmithManager.AfterForging());
 
         return weapon;
     }

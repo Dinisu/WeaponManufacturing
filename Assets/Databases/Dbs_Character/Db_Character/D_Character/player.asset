@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59fab18b873315d46bfc7e88f72202e1, type: 3}
+  m_Name: player
+  m_EditorClassIdentifier: Assembly-CSharp::App.BaseSystem.DataStores.ScriptableObjects.Status.D_Ch_StatusData
+  name: "\u4E3B\u4EBA\u516C"
+  id: 0
+  ItemDescription: 
+  level: 0
+  LevelStatus:
+    MaxHpup: 0
+    MaxMpup: 0
+    Attackup: 0
+    Magicup: 0
+    Defenceup: 0
+    MagicDefenseup: 0
+    Speedup: 0
+  attribute: 0
+  maxhp: 100
+  hp: 100
+  maxmp: 30
+  mp: 30
+  attack: 0
+  magic: 0
+  defense: 0
+  magicDefense: 0
+  speed: 0
+  criticalRate: 0
+  money: 0
+  Accessories1: {fileID: 0}
+  Accessories2: {fileID: 0}
+  SkillList: {fileID: 0}
+  ActiveBuffs: []
+  ActiveBuffs_It: []
+  Character: {fileID: 0}
+  DataIcon: {fileID: 0}
+  DroppedItems: []
+  Event: {fileID: 0}

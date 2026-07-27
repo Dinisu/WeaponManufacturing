@@ -17,12 +17,12 @@ MonoBehaviour:
   ItemDescription: 
   level: 0
   LevelStatus:
-    MaxHpup: 0
+    MaxHpup: 3
     MaxMpup: 0
-    Attackup: 0
+    Attackup: 2
     Magicup: 0
-    Defenceup: 0
-    MagicDefenseup: 0
+    Defenceup: 1
+    MagicDefenseup: 1
     Speedup: 0
   attribute: 0
   maxhp: 30
@@ -33,7 +33,7 @@ MonoBehaviour:
   magic: 1
   defense: 5
   magicDefense: 5
-  speed: 4
+  speed: 100
   criticalRate: 0
   money: 0
   Accessories1: {fileID: 0}
@@ -41,11 +41,11 @@ MonoBehaviour:
   SkillList: {fileID: 0}
   ActiveBuffs: []
   ActiveBuffs_It: []
-  Character: {fileID: 0}
-  B_Character: {fileID: 0}
-  B_Icon: {fileID: 0}
-  B_Icon_Ch: {fileID: 0}
-  Icon_Character1: {fileID: 0}
-  Icon_Character2: {fileID: 0}
-  DroppedItems: []
+  Character: {fileID: 2793713012914850043, guid: 48035cdb98d7c6947a81ea3bbb9644fd, type: 3}
+  DataIcon: {fileID: 21300000, guid: bf1ec6d0f702cf64aa0dcef1dde074e1, type: 3}
+  DroppedItems:
+  - DroppedItem: {fileID: 11400000, guid: fc4602268e4340d46bcfdbf3b23654c6, type: 2}
+    Droprate: 30
+  - DroppedItem: {fileID: 11400000, guid: 74a7fef4249c676468902efa10e4cd98, type: 2}
+    Droprate: 50
   Event: {fileID: 0}

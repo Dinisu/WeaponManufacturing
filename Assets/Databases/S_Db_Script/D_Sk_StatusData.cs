@@ -40,8 +40,6 @@ namespace App.BaseSystem.DataStores.ScriptableObjects.Status
         public enum SkillRange
         {
             Himself,      // Ž©•ª
-            Single_ally,  // –¡•û’P‘Ì
-            Alla_llies,   // –¡•û‘S‘Ì
             Single_enemy, // “G’P‘Ì
             All_enemies   // “G‘S‘Ì 
         }
@@ -106,6 +104,15 @@ namespace App.BaseSystem.DataStores.ScriptableObjects.Status
         }
         [SerializeField, Header("ˆÐ—ÍAŒø—Í‚Q")]//Œø‰Ê‚ª•¡”‚ ‚éê‡
         private float efficacy2;
+
+
+        public int Speed
+        {
+            get => speed;
+            set => speed = value;
+        }
+        [SerializeField, Header("‘¬“x")]
+        private int speed;
 
         public float CriticalRate
         {

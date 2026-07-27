@@ -9,44 +9,41 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0ddc16f201cc4b4e8827f8d02d425de, type: 3}
+  m_Script: {fileID: 11500000, guid: 59fab18b873315d46bfc7e88f72202e1, type: 3}
   m_Name: E_Bat
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::App.BaseSystem.DataStores.ScriptableObjects.Status.D_Ch_StatusData
   name: "\u30D0\u30C3\u30C8"
   id: 102
   ItemDescription: 
-  level: 1
-  exp: 5
-  LevelExp: []
-  sp: 0
+  level: 0
+  LevelStatus:
+    MaxHpup: 2
+    MaxMpup: 0
+    Attackup: 1
+    Magicup: 0
+    Defenceup: 1
+    MagicDefenseup: 1
+    Speedup: 0
   attribute: 0
   maxhp: 20
   hp: 20
-  maxmp: 3
-  mp: 3
+  maxmp: 5
+  mp: 5
   attack: 10
   magic: 0
   defense: 2
   magicDefense: 2
-  speed: 5
+  speed: 100
   criticalRate: 0
-  money: 5
-  Weapon: {fileID: 0}
-  Armor: {fileID: 0}
+  money: 0
   Accessories1: {fileID: 0}
   Accessories2: {fileID: 0}
-  SkillList: {fileID: 11400000, guid: 3fef7060afa267445874c04926c90f3b, type: 2}
+  SkillList: {fileID: 0}
   ActiveBuffs: []
   ActiveBuffs_It: []
-  abnormalstatus: 0
-  Character: {fileID: 0}
-  B_Character: {fileID: 7465381492159604352, guid: cd2d8e67575c61045b14347fd807da94, type: 3}
-  B_Icon: {fileID: 8917708082994333342, guid: ed61d0a16e440ee41887f9d4d0ed56e2, type: 3}
-  B_Icon_Ch: {fileID: 0}
-  Icon_Character1: {fileID: 0}
-  Icon_Character2: {fileID: 0}
+  Character: {fileID: 2793713012914850043, guid: 48035cdb98d7c6947a81ea3bbb9644fd, type: 3}
+  DataIcon: {fileID: 21300000, guid: bf1ec6d0f702cf64aa0dcef1dde074e1, type: 3}
   DroppedItems:
-  - DroppedItem: {fileID: 11400000, guid: 8a82fc880a05f864ba9e7a07e3976696, type: 2}
-    Droprate: 100
-  Status: {fileID: 0}
+  - DroppedItem: {fileID: 11400000, guid: 463d0aa0f1368a145bf8ee386c548e5b, type: 2}
+    Droprate: 50
   Event: {fileID: 0}
