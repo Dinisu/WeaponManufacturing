@@ -201,7 +201,7 @@ public class BlacksmithGameManager : MonoBehaviour
 
         string prefix = GetWeaponPrefix(score);
 
-        weapon.Name = $"{prefix}“S‚ÌŒ•";
+        weapon.Name = $"{prefix}Œ•";
 
         //IDİ’è
         weapon.Id = GetNewEquipmentID();

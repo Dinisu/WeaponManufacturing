@@ -16,48 +16,51 @@ public class ItemUI : MonoBehaviour
     [SerializeField] private Button button;
     private ItemUI sourceItemUI;
 
-    [Header("‘fŞƒf[ƒ^")]
+    [Header("ç´ æãƒ‡ãƒ¼ã‚¿")]
     public D_It_StatusData ItemData;
 
     private BlacksmithManager blacksmithManager;
+    private WarehouseManager warehouseManager;
 
 
     /// <summary>
-    /// ƒAƒCƒeƒ€UI‚Ì‰Šú‰»ˆ—
+    /// ã‚¢ã‚¤ãƒ†ãƒ UIã®åˆæœŸåŒ–å‡¦ç†
     /// </summary>
-    public void Initialize(D_It_StatusData itemData, BlacksmithManager manager, ItemUI sourceItemUI, UnityAction action)
+    public void Initialize(D_It_StatusData itemData, BlacksmithManager manager, WarehouseManager warehouse, ItemUI sourceItemUI, UnityAction action)
     {
-        blacksmithManager = manager;                  //’b–èƒ}ƒl[ƒWƒƒ[‚ğæ“¾
+        blacksmithManager = manager;                  //é›å†¶ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã‚’å–å¾—
+        warehouseManager = warehouse;
         this.sourceItemUI = sourceItemUI;
 
-        ItemData = itemData;                          //’b‘¢‚È‚Ç‚ÅQÆo—ˆ‚é‚æ‚¤‚ÉB
+        ItemData = itemData;                          //é›é€ ãªã©ã§å‚ç…§å‡ºæ¥ã‚‹ã‚ˆã†ã«ã€‚
 
-        itemImage.sprite = itemData.DataIcon;         // UI‚É‰æ–Ê‚ğ“ü‚ê‚é
-        SetRarityColor(itemData.SeeRarity);           // UI‚ÌƒŒƒA“x‚²‚Æ‚ÌFİ’è
+        itemImage.sprite = itemData.DataIcon;         // UIã«ç”»é¢ã‚’å…¥ã‚Œã‚‹
+        SetRarityColor(itemData.SeeRarity);           // UIã®ãƒ¬ã‚¢åº¦ã”ã¨ã®è‰²è¨­å®š
 
-        //‚±‚Ìƒ{ƒ^ƒ“‚Ìˆ—İ’è
+        //ã“ã®ãƒœã‚¿ãƒ³ã®å‡¦ç†è¨­å®š
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(action);
     }
 
     /// <summary>
-    /// ‘•”õUI‚Ì‰Šú‰»ˆ—
+    /// è£…å‚™UIã®åˆæœŸåŒ–å‡¦ç†
     /// </summary>
-    public void Initialize(D_Eq_StatusData itemData, BlacksmithManager manager, ItemUI sourceItemUI, UnityAction action)
+    public void Initialize(D_Eq_StatusData itemData, BlacksmithManager manager, WarehouseManager warehouse, ItemUI sourceItemUI, UnityAction action)
     {
-        blacksmithManager = manager;                  //’b–èƒ}ƒl[ƒWƒƒ[‚ğæ“¾
+        blacksmithManager = manager;                  //é›å†¶ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã‚’å–å¾—
+        warehouseManager = warehouse;
         this.sourceItemUI = sourceItemUI;
 
-        itemImage.sprite = itemData.DataIcon;         // UI‚É‰æ–Ê‚ğ“ü‚ê‚é
-        SetRarityColor(itemData.SeeRarity);           // UI‚ÌƒŒƒA“x‚²‚Æ‚ÌFİ’è
+        itemImage.sprite = itemData.DataIcon;         // UIã«ç”»é¢ã‚’å…¥ã‚Œã‚‹
+        SetRarityColor(itemData.SeeRarity);           // UIã®ãƒ¬ã‚¢åº¦ã”ã¨ã®è‰²è¨­å®š
 
-        //‚±‚Ìƒ{ƒ^ƒ“‚Ìˆ—İ’è
+        //ã“ã®ãƒœã‚¿ãƒ³ã®å‡¦ç†è¨­å®š
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(action);
     }
 
     /// <summary>
-    /// Š”•\¦
+    /// æ‰€æŒæ•°è¡¨ç¤º
     /// </summary>
     public void SetNumber(int number)
     {
@@ -65,7 +68,7 @@ public class ItemUI : MonoBehaviour
     }
 
     /// <summary>
-    /// Š”‚ğ•\¦‚µ‚È‚¢
+    /// æ‰€æŒæ•°ã‚’è¡¨ç¤ºã—ãªã„
     /// </summary>
     public void HideNumber()
     {
@@ -73,7 +76,7 @@ public class ItemUI : MonoBehaviour
     }
 
     /// <summary>
-    /// ’b–è‚Ég—p‚·‚éƒAƒCƒeƒ€‘I‘ğˆ—‚ÌŒÄ‚Ño‚µ
+    /// é›å†¶ã«ä½¿ç”¨ã™ã‚‹ã‚¢ã‚¤ãƒ†ãƒ é¸æŠå‡¦ç†ã®å‘¼ã³å‡ºã—
     /// </summary>
     public void SelectItem(D_It_StatusData itemData, GameObject uiObj)
     {
@@ -84,18 +87,45 @@ public class ItemUI : MonoBehaviour
                 blacksmithManager.SelectMaterial(itemData, uiObj, this);
             }
         }
-        
+
         Debug.Log(itemData.Name);
     }
 
+    public void SelectWarehouseItem(D_It_StatusData itemData, GameObject uiObj)
+    {
+        if (itemData.Number > 0)
+        {
+            if (warehouseManager != null)
+            {
+                warehouseManager.SelectWarehouseItem(itemData, uiObj, this);
+                return;
+            }
+        }
+
+        Debug.Log($"Warehouse select: {itemData.Name}");
+    }
+
     /// <summary>
-    /// ƒAƒCƒeƒ€‘I‘ğ‚ÌƒLƒƒƒ“ƒZƒ‹ˆ—‚ÌŒÄ‚Ño‚µ
+    /// ç´ æé¸æŠã®ã‚­ãƒ£ãƒ³ã‚»ãƒ«å‡¦ç†ã®å‘¼ã³å‡ºã—
     /// </summary>
-    public void CancelItem(D_It_StatusData itemData, GameObject Material)
+    public void MateriallItem(D_It_StatusData itemData, GameObject Material)
     {
         if (blacksmithManager != null)
         {
             blacksmithManager.CancelMaterial(itemData, Material, sourceItemUI);
+        }
+    }
+    public void SelectWarehouseItem(D_Eq_StatusData itemData, GameObject uiObj)
+    {
+        if (itemData != null)
+        {
+            if (warehouseManager != null)
+            {
+                warehouseManager.SelectWarehouseEquipment(itemData, uiObj, this);
+                return;
+            }
+
+            Debug.Log($"Warehouse select equipment: {itemData.Name}");
         }
     }
 
@@ -105,7 +135,7 @@ public class ItemUI : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒAƒCƒeƒ€‰æ‘œ‚Ì•\¦êŠ
+    /// ã‚¢ã‚¤ãƒ†ãƒ ç”»åƒã®è¡¨ç¤ºå ´æ‰€
     /// </summary>
     /*public void SetIcon(Sprite sprite)
     {
@@ -113,7 +143,7 @@ public class ItemUI : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒAƒCƒeƒ€‚ÌŠ”•\¦
+    /// ã‚¢ã‚¤ãƒ†ãƒ ã®æ‰€æŒæ•°è¡¨ç¤º
     /// </summary>
     public void ItemNumber(int number) 
     { 
@@ -121,7 +151,7 @@ public class ItemUI : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒŒƒA“x‚²‚Æ‚ÌFİ’èiŒÄ‚Ño‚µ—pj
+    /// ãƒ¬ã‚¢åº¦ã”ã¨ã®è‰²è¨­å®šï¼ˆå‘¼ã³å‡ºã—ç”¨ï¼‰
     /// </summary>
     public void SetItem(Sprite sprite, Rarity rarity)
     {
@@ -130,7 +160,7 @@ public class ItemUI : MonoBehaviour
     }*/
 
     /// <summary>
-    /// ƒŒƒA“x‚²‚Æ‚ÌFİ’èiˆ—•”•ªj
+    /// ãƒ¬ã‚¢åº¦ã”ã¨ã®è‰²è¨­å®šï¼ˆå‡¦ç†éƒ¨åˆ†ï¼‰
     /// </summary>
     private void SetRarityColor(Rarity rarity)
     {
@@ -149,11 +179,11 @@ public class ItemUI : MonoBehaviour
                 break;
 
             case Rarity.Epic:
-                rarityColor.color = new Color(0.7f, 0f, 1f); // ‡
+                rarityColor.color = new Color(0.7f, 0f, 1f); // ç´«
                 break;
 
             case Rarity.Legendary:
-                rarityColor.color = new Color(1f, 0.6f, 0f); // ƒIƒŒƒ“ƒW
+                rarityColor.color = new Color(1f, 0.6f, 0f); // ã‚ªãƒ¬ãƒ³ã‚¸
                 break;
         }
     }

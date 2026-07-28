@@ -49,13 +49,11 @@ public class BattleUI : MonoBehaviour
             startWorldPosition = transform.position;
         }
 
-        transform.localRotation = Quaternion.Euler(idleRotation);
-
         useUIOverlap = (rectTransform != null);
         battleManager = FindAnyObjectByType<BattleManager>();
         ResetAttackTimer();
         StartIdleMotion();
-        //transform.localRotation = Quaternion.Euler(idleRotation);
+        transform.localRotation = Quaternion.Euler(idleRotation);
     }
 
     private void OnDisable()

@@ -16,7 +16,7 @@ MonoBehaviour:
   id: 103
   ItemDescription: "\u9244"
   EfficacyItemDescription: 
-  rarity: 0
+  rarity: 1
   attribute: 0
   kinds: 0
   buff_DeBuff_kind: 0
@@ -33,7 +33,7 @@ MonoBehaviour:
   efficacy2: 0
   criticalRate: 0
   duration: 0
-  number: 10
+  number: 15
   price: 0
   DataIcon: {fileID: -65725288881123977, guid: ff7a83b3f05541a449c60d6fc92a13c0, type: 3}
   Effect: {fileID: 0}

@@ -53,9 +53,9 @@ public class BlacksmithManager : MonoBehaviour
             itemUI.SetNumber(itemData.Number);
 
             // 選択欄UIを設定
-            materialItemUI.Initialize(itemData, this, itemUI, () =>
+            materialItemUI.Initialize(itemData, this, null, itemUI, () =>
             {
-                materialItemUI.CancelItem(itemData, Material1);
+                materialItemUI.MateriallItem(itemData, Material1);
             });
             materialItemUI.HideNumber();   // ← 個数を非表示
         }
@@ -73,9 +73,9 @@ public class BlacksmithManager : MonoBehaviour
             itemUI.SetNumber(itemData.Number);
 
             // 選択欄UIを設定
-            materialItemUI.Initialize(itemData, this, itemUI, () =>
+            materialItemUI.Initialize(itemData, this, null, itemUI, () =>
             {
-                materialItemUI.CancelItem(itemData, Material2);
+                materialItemUI.MateriallItem(itemData, Material2);
             });
             materialItemUI.HideNumber();   // ← 個数を非表示
         }

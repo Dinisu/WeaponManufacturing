@@ -9,15 +9,18 @@ public class MenuManager : MonoBehaviour
 {
     [SerializeField, Header("表示背景")]
     private List<BackgroundData> backgrounds;
-    [SerializeField, Header("アイテム表示プレハブ")] 
+    [SerializeField, Header("アイテム表示プレハブ")]
     private GameObject data_UI;
 
     private Db_It_StatusDataBase db_PlayerItem;//所持アイテムデータベース
     private Db_Eq_StatusDataBase db_PossessedEq;//所持装備データベース
+    private Db_Eq_StatusDataBase db_EquippedWeapon;
     private Dss_It_StatusDataStores dss_It_StatusDataStores;
     private Dss_Eq_StatusDataStores dss_Eq_StatusDataStores;
 
     [SerializeField] private BlacksmithManager blacksmithManager;
+    [SerializeField] private WarehouseManager warehouseManager;
+    [SerializeField] private BattleManager battleManager;
 
     private void Awake()
     {
@@ -26,6 +29,8 @@ public class MenuManager : MonoBehaviour
 
         // FindDatabaseWithName を使用して Player_Item データベースを取得
         db_PlayerItem = dss_It_StatusDataStores.FindDatabaseWithName("Possessed_Item");
+        db_PossessedEq = dss_Eq_StatusDataStores.FindDatabaseWithName("Possessed Equipment");
+        db_EquippedWeapon = dss_Eq_StatusDataStores?.FindDatabaseWithName("Equipped weapon");
     }
     /// <summary>
     /// 表示背景の種類
@@ -34,7 +39,9 @@ public class MenuManager : MonoBehaviour
     {
         Battle,
         Blacksmith,
-        Enchantment
+        Enchantment,
+        BuyAndSell,
+        Warehouse
     }
 
     [System.Serializable]
@@ -107,6 +114,24 @@ public class MenuManager : MonoBehaviour
         }
     }
 
+    public void Next_Warehouse()
+    {
+        foreach (var data in backgrounds)
+        {
+            if (data.type == BackgroundType.Warehouse)
+            {
+                data.background.SetActive(true);
+
+                warehouseManager?.ClearEquippedSlots();
+                UIGeneration(BackgroundType.Warehouse);
+            }
+            else
+            {
+                data.background.SetActive(false);
+            }
+        }
+    }
+
     /// <summary>
     /// 画面に対応する所持品UI生成
     /// </summary>
@@ -131,7 +156,7 @@ public class MenuManager : MonoBehaviour
                 {
                     case BackgroundType.Battle:
                         SelectMaterialClear();
-
+                        battleManager?.RefreshEquippedWeapons();
                         break;
 
                     case BackgroundType.Blacksmith:
@@ -145,6 +170,12 @@ public class MenuManager : MonoBehaviour
 
                         GenerateEquipmentUI(data);          
                         break;
+                    case BackgroundType.Warehouse:
+                        SelectMaterialClear();
+
+                        GenerateMaterialItemUI(data);
+                        GenerateEquipmentUI(data);
+                        break ;
                 }
 
                 break;
@@ -163,7 +194,7 @@ public class MenuManager : MonoBehaviour
 
             if (itemUI != null)
             {
-                itemUI.CancelItem(itemUI.ItemData, blacksmithManager.Material1);
+                itemUI.MateriallItem(itemUI.ItemData, blacksmithManager.Material1);
             }
         }
 
@@ -173,7 +204,7 @@ public class MenuManager : MonoBehaviour
 
             if (itemUI != null)
             {
-                itemUI.CancelItem(itemUI.ItemData, blacksmithManager.Material2);
+                itemUI.MateriallItem(itemUI.ItemData, blacksmithManager.Material2);
             }
         }
     }
@@ -197,9 +228,16 @@ public class MenuManager : MonoBehaviour
             // アイテムの画像を表示する子オブジェクトを取得
             ItemUI itemUI = uiObj.GetComponent<ItemUI>();
 
-            itemUI.Initialize(itemData, blacksmithManager, itemUI, () =>
+            itemUI.Initialize(itemData, blacksmithManager, warehouseManager, itemUI, () =>
             {
-                itemUI.SelectItem(itemData, data_UI);
+                if (data.type == BackgroundType.Warehouse)
+                {
+                    itemUI.SelectWarehouseItem(itemData, uiObj);
+                }
+                else
+                {
+                    itemUI.SelectItem(itemData, data_UI);
+                }
             });
             itemUI.SetNumber(itemData.Number);
 
@@ -220,12 +258,24 @@ public class MenuManager : MonoBehaviour
             // アイテムの画面を表示する子オブジェクトを取得
             ItemUI itemUI = uiObj.GetComponent<ItemUI>();
 
-            itemUI.Initialize(eqData, blacksmithManager, itemUI, () =>
+            itemUI.Initialize(eqData, blacksmithManager, warehouseManager, itemUI, () =>
             {
-                itemUI.SelectItem(eqData);
+                if (data.type == BackgroundType.Warehouse)
+                {
+                    itemUI.SelectWarehouseItem(eqData, uiObj);
+                }
+                else
+                {
+                    itemUI.SelectItem(eqData);
+                }
             });
 
             data.itemList.Add(uiObj);
+
+            if (data.type == BackgroundType.Warehouse && db_EquippedWeapon != null && db_EquippedWeapon.ItemList.Contains(eqData))
+            {
+                warehouseManager.CreateEquippedSlotUI(eqData, uiObj);
+            }
         }
     }
 }

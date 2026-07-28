@@ -14,6 +14,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::App.BaseSystem.DataStores.ScriptableObjects.Status.Db_Eq_StatusDataBase
   itemList:
   - {fileID: 11400000, guid: 70649551ac2330642a0ef2d0dbd1074e, type: 2}
-  - {fileID: 11400000, guid: 70649551ac2330642a0ef2d0dbd1074e, type: 2}
-  - {fileID: 11400000, guid: 70649551ac2330642a0ef2d0dbd1074e, type: 2}
-  - {fileID: 11400000, guid: 70649551ac2330642a0ef2d0dbd1074e, type: 2}

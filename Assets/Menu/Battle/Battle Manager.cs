@@ -477,6 +477,15 @@ public class BattleManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 現在装備中の武器に合わせて BattleManager の武器表示を更新する
+    /// </summary>
+    public void RefreshEquippedWeapons()
+    {
+        ClearSpawnedWeapons();
+        SpawnEquippedWeapons();
+    }
+
+    /// <summary>
     /// 敵ステータスをテンプレートから生成し、レベルに応じて強化する
     /// </summary>
     private D_Ch_StatusData EnemyStatSettings(D_Ch_StatusData enemyData, int level)
