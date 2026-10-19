@@ -250,6 +250,8 @@ public class MenuManager : MonoBehaviour
     /// </summary>
     private void GenerateEquipmentUI(BackgroundData data)
     {
+        db_PossessedEq.ItemList.RemoveAll(item => item == null);
+
         foreach (var eqData in db_PossessedEq.ItemList)
         {
             //data_UIプレハブを生成して、displayFieldsの子オブジェクトとして配置する

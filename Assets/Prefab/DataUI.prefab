@@ -429,3 +429,4 @@ MonoBehaviour:
   rarityColor: {fileID: 6326477995487582243}
   numberText: {fileID: 3581130414736343558}
   button: {fileID: 6620677947998261004}
+  ItemData: {fileID: 0}

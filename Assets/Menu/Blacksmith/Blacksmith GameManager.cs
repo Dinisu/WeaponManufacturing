@@ -325,6 +325,9 @@ public class BlacksmithGameManager : MonoBehaviour
         return (Rarity)rarity;
     }
 
+    /// <summary>
+    /// ‰æ‘œ‚Ìİ’è
+    /// </summary>
     private Sprite GetRandomIcon(Rarity rarity)
     {
         string path = $"Im_Equipment/{rarity}";
