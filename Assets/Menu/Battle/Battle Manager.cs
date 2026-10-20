@@ -379,6 +379,8 @@ public class BattleManager : MonoBehaviour
         var image = enemyObject.GetComponent<Image>();
         if (image != null)
         {
+            image.type = Image.Type.Simple;
+            image.preserveAspect = true;
             image.sprite = icon;
         }
     }
@@ -401,6 +403,8 @@ public class BattleManager : MonoBehaviour
         var image = weaponObject.GetComponent<Image>();
         if (image != null)
         {
+            image.type = Image.Type.Simple;
+            image.preserveAspect = true;
             image.sprite = icon;
         }
     }

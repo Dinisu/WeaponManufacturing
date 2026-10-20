@@ -34,6 +34,8 @@ public class ItemUI : MonoBehaviour
 
         ItemData = itemData;                          //鍛造などで参照出来るように。
 
+        itemImage.type = Image.Type.Simple;
+        itemImage.preserveAspect = true;
         itemImage.sprite = itemData.DataIcon;         // UIに画面を入れる
         SetRarityColor(itemData.SeeRarity);           // UIのレア度ごとの色設定
 
@@ -51,6 +53,8 @@ public class ItemUI : MonoBehaviour
         warehouseManager = warehouse;
         this.sourceItemUI = sourceItemUI;
 
+        itemImage.type = Image.Type.Simple;
+        itemImage.preserveAspect = true;
         itemImage.sprite = itemData.DataIcon;         // UIに画面を入れる
         SetRarityColor(itemData.SeeRarity);           // UIのレア度ごとの色設定
 
