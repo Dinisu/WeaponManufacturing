@@ -40,7 +40,7 @@ namespace App.BaseSystem.DataStores.ScriptableObjects.Status
 
         public enum Kinds
         {
-            //素材、バフ、デバフ、攻撃、魔法、回復、貴重品
+            //素材、バフ、デバフ、攻撃、魔法、回復、エンチャント
             Material,
             Buff,
             DeBuff,
@@ -48,7 +48,7 @@ namespace App.BaseSystem.DataStores.ScriptableObjects.Status
             Magic,
             HP_Recovery,
             MP_Recovery,
-            Valuables
+            EnchantMaterial
         }
         public Kinds SeeKinds//参照時はこれを呼ぶ
         {

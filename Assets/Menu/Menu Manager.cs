@@ -21,11 +21,18 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private BlacksmithManager blacksmithManager;
     [SerializeField] private WarehouseManager warehouseManager;
     [SerializeField] private BattleManager battleManager;
+    // Enchantment画面の選択UIを管理する。未設定時はシーン内から検索する。
+    [SerializeField] private EnchantmentManager enchantmentManager;
 
     private void Awake()
     {
         dss_It_StatusDataStores = FindAnyObjectByType<Dss_It_StatusDataStores>();
         dss_Eq_StatusDataStores = FindAnyObjectByType<Dss_Eq_StatusDataStores>();
+        // Inspector参照がない場合も、シーンに配置されたManagerを取得する。
+        if (enchantmentManager == null)
+        {
+            enchantmentManager = FindAnyObjectByType<EnchantmentManager>();
+        }
 
         // FindDatabaseWithName を使用して Player_Item データベースを取得
         db_PlayerItem = dss_It_StatusDataStores.FindDatabaseWithName("Possessed_Item");
@@ -143,6 +150,10 @@ public class MenuManager : MonoBehaviour
             //表示中の画面のUI更新
             if (data.type == blacksmith)
             {
+                // 一覧を破棄する前に選択を解除し、素材数を戻す。
+                SelectMaterialClear();
+                enchantmentManager?.ClearSelection();
+
                 // 古いUI削除
                 foreach (var item in data.itemList)
                 {
@@ -155,25 +166,22 @@ public class MenuManager : MonoBehaviour
                 switch (data.type)
                 {
                     case BackgroundType.Battle:
-                        SelectMaterialClear();
                         battleManager?.RefreshEquippedWeapons();
                         break;
 
                     case BackgroundType.Blacksmith:
-                        SelectMaterialClear();
-
                         GenerateMaterialItemUI(data);
                         break;
 
                     case BackgroundType.Enchantment:
-                        SelectMaterialClear();
-
-                        GenerateEquipmentUI(data);          
+                        // エンチャント素材と所持装備を同じ一覧領域へ生成する。
+                        GenerateMaterialItemUI(data, D_It_StatusData.Kinds.EnchantMaterial);
+                        GenerateEquipmentUI(data);
                         break;
                     case BackgroundType.Warehouse:
-                        SelectMaterialClear();
-
                         GenerateMaterialItemUI(data);
+                        // 倉庫ではエンチャント用素材も通常素材と一緒に表示する。
+                        GenerateMaterialItemUI(data, D_It_StatusData.Kinds.EnchantMaterial);
                         GenerateEquipmentUI(data);
                         break ;
                 }
@@ -210,16 +218,17 @@ public class MenuManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 素材アイテムUI生成
+    /// 指定した種類の所持素材UIを生成する。
+    /// 種類を省略した場合は鍛冶用のMaterial素材を表示する。
     /// </summary>
-    private void GenerateMaterialItemUI(BackgroundData data)
+    private void GenerateMaterialItemUI(BackgroundData data, D_It_StatusData.Kinds kinds = D_It_StatusData.Kinds.Material)
     {
         foreach (var itemData in db_PlayerItem.ItemList)
         {
             if (itemData.Number <= 0)
                 continue;
             //アイテムが素材でなければ表示しない
-            if (itemData.SeeKinds != D_It_StatusData.Kinds.Material)
+            if (itemData.SeeKinds != kinds)
                 continue;
 
             //data_UIプレハブを生成して、displayFieldsの子オブジェクトとして配置する
@@ -228,6 +237,7 @@ public class MenuManager : MonoBehaviour
             // アイテムの画像を表示する子オブジェクトを取得
             ItemUI itemUI = uiObj.GetComponent<ItemUI>();
 
+            // Enchantment画面のUIだけ選択処理をEnchantmentManagerへ接続する。
             itemUI.Initialize(itemData, blacksmithManager, warehouseManager, itemUI, () =>
             {
                 if (data.type == BackgroundType.Warehouse)
@@ -238,7 +248,7 @@ public class MenuManager : MonoBehaviour
                 {
                     itemUI.SelectItem(itemData, data_UI);
                 }
-            });
+            }, data.type == BackgroundType.Enchantment ? enchantmentManager : null);
             itemUI.SetNumber(itemData.Number);
 
 
@@ -260,6 +270,7 @@ public class MenuManager : MonoBehaviour
             // アイテムの画面を表示する子オブジェクトを取得
             ItemUI itemUI = uiObj.GetComponent<ItemUI>();
 
+            // Enchantment画面の装備UIは、選択対象の武器として扱う。
             itemUI.Initialize(eqData, blacksmithManager, warehouseManager, itemUI, () =>
             {
                 if (data.type == BackgroundType.Warehouse)
@@ -270,7 +281,7 @@ public class MenuManager : MonoBehaviour
                 {
                     itemUI.SelectItem(eqData);
                 }
-            });
+            }, data.type == BackgroundType.Enchantment ? enchantmentManager : null);
 
             data.itemList.Add(uiObj);
 

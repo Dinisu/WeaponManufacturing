@@ -21,15 +21,19 @@ public class ItemUI : MonoBehaviour
 
     private BlacksmithManager blacksmithManager;
     private WarehouseManager warehouseManager;
+    // Enchantment画面で選択操作を受け渡すマネージャー。
+    private EnchantmentManager enchantmentManager;
 
 
     /// <summary>
     /// アイテムUIの初期化処理
+    /// エンチャント画面では、選択操作の受け渡し先も設定する。
     /// </summary>
-    public void Initialize(D_It_StatusData itemData, BlacksmithManager manager, WarehouseManager warehouse, ItemUI sourceItemUI, UnityAction action)
+    public void Initialize(D_It_StatusData itemData, BlacksmithManager manager, WarehouseManager warehouse, ItemUI sourceItemUI, UnityAction action, EnchantmentManager enchantment = null)
     {
         blacksmithManager = manager;                  //鍛冶マネージャーを取得
         warehouseManager = warehouse;
+        enchantmentManager = enchantment;
         this.sourceItemUI = sourceItemUI;
 
         ItemData = itemData;                          //鍛造などで参照出来るように。
@@ -46,11 +50,13 @@ public class ItemUI : MonoBehaviour
 
     /// <summary>
     /// 装備UIの初期化処理
+    /// エンチャント画面では、選択操作の受け渡し先も設定する。
     /// </summary>
-    public void Initialize(D_Eq_StatusData itemData, BlacksmithManager manager, WarehouseManager warehouse, ItemUI sourceItemUI, UnityAction action)
+    public void Initialize(D_Eq_StatusData itemData, BlacksmithManager manager, WarehouseManager warehouse, ItemUI sourceItemUI, UnityAction action, EnchantmentManager enchantment = null)
     {
         blacksmithManager = manager;                  //鍛冶マネージャーを取得
         warehouseManager = warehouse;
+        enchantmentManager = enchantment;
         this.sourceItemUI = sourceItemUI;
 
         itemImage.type = Image.Type.Simple;
@@ -86,6 +92,13 @@ public class ItemUI : MonoBehaviour
     {
         if (itemData.Number > 0)
         {
+            // エンチャント用UIなら、素材選択を優先して処理する。
+            if (enchantmentManager != null)
+            {
+                enchantmentManager.SelectMaterial(itemData, uiObj, this);
+                return;
+            }
+
             if (blacksmithManager != null)
             {
                 blacksmithManager.SelectMaterial(itemData, uiObj, this);
@@ -135,6 +148,13 @@ public class ItemUI : MonoBehaviour
 
     public void SelectItem(D_Eq_StatusData itemData)
     {
+        // エンチャント画面でのみ、装備を対象武器として選択する。
+        if (enchantmentManager != null)
+        {
+            enchantmentManager.SelectWeapon(itemData, gameObject);
+            return;
+        }
+
         Debug.Log(itemData.Name);
     }
 
