@@ -177,7 +177,10 @@ public class EnchantmentManager : MonoBehaviour
         D_Sk_StatusData.Buff_DeBuff_Kinds selectedBuffKind =
             (D_Sk_StatusData.Buff_DeBuff_Kinds)DrawWeightedValue(
                 (int)D_Sk_StatusData.Buff_DeBuff_Kinds.Attack,
-                material => (int)material.SeeBuff_DeBuff_Kinds);
+                material => material.SeeBuff_DeBuff_Kinds == D_It_StatusData.Buff_DeBuff_Kinds.None
+                    ? Random.Range((int)D_Sk_StatusData.Buff_DeBuff_Kinds.Attack,
+                        (int)D_Sk_StatusData.Buff_DeBuff_Kinds.Critical + 1)
+                    : (int)material.SeeBuff_DeBuff_Kinds);
 
         System.Collections.Generic.List<D_Sk_StatusData> candidates = enchantSkillDatabase.ItemList.FindAll(
             skill => skill != null && skill.SeeRarity == selectedRarity &&
