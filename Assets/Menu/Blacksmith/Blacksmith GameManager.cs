@@ -209,6 +209,9 @@ public class BlacksmithGameManager : MonoBehaviour
         // ステータス
         SetStatus(weapon, material1, material2, score);
 
+        // エンチャント解除時に戻せるよう、作成時点の武器能力値を保存する。
+        weapon.SaveOriginalStats();
+
         // レア度
         weapon.SeeRarity = CalculateRarity(
             material1.SeeRarity,

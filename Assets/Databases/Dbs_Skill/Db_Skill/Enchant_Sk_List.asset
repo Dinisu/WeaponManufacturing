@@ -13,4 +13,33 @@ MonoBehaviour:
   m_Name: Enchant_Sk_List
   m_EditorClassIdentifier: Assembly-CSharp::App.BaseSystem.DataStores.ScriptableObjects.Status.Db_Sk_StatusDataBase
   itemList:
-  - {fileID: 11400000, guid: 4acd8ce0aec8f14449fa847dd69b1d4a, type: 2}
+  - {fileID: 11400000, guid: 0ef52d336e0c4361bf7b4992cea3c3c2, type: 2}
+  - {fileID: 11400000, guid: ecb92830e02046dbac33387eb4da268c, type: 2}
+  - {fileID: 11400000, guid: 7be698c8ab2742bd8e48851b8dc32a9e, type: 2}
+  - {fileID: 11400000, guid: ed247c4ecf96422a891ab42eeb8d72a6, type: 2}
+  - {fileID: 11400000, guid: 799ecdd4a3104590bc9c286e4a1cb6bf, type: 2}
+  - {fileID: 11400000, guid: f593a8b310504b4c87047346d279b232, type: 2}
+  - {fileID: 11400000, guid: 7a5294de8e144d1e88b69c1f3bf8b1ba, type: 2}
+  - {fileID: 11400000, guid: cb9f7e3cf2454743a35171e5ece9155e, type: 2}
+  - {fileID: 11400000, guid: c9ce1cfe8ce74ee7b33f20fd7ed52a0e, type: 2}
+  - {fileID: 11400000, guid: cb0694d388b9448c8a08cf703de3de19, type: 2}
+  - {fileID: 11400000, guid: da7cf10dcca04aea9763c3a9bd8a252e, type: 2}
+  - {fileID: 11400000, guid: 1a344c67935e4627aebaa20ef99253f1, type: 2}
+  - {fileID: 11400000, guid: bac014b03b404e40a55bece06bae5566, type: 2}
+  - {fileID: 11400000, guid: b2b21811211a451fa5f27e13c386321e, type: 2}
+  - {fileID: 11400000, guid: 842c8e75fe2f44b3916fa750d3a8f73c, type: 2}
+  - {fileID: 11400000, guid: 98f4c68601e1477fb7f4f3660fa87e51, type: 2}
+  - {fileID: 11400000, guid: 3aa0ea2283e84d7c84d585012d40e314, type: 2}
+  - {fileID: 11400000, guid: a5cfba408433428db40ec4c33a985742, type: 2}
+  - {fileID: 11400000, guid: 97bf067eabed443cabcda0971031a951, type: 2}
+  - {fileID: 11400000, guid: c753b79553f846cf9ad0dab5964411e3, type: 2}
+  - {fileID: 11400000, guid: 2293d2d30ff04aab9c0b32f7eaaec2ff, type: 2}
+  - {fileID: 11400000, guid: 57fb3a9534f94d779d76c7d7c06ff3eb, type: 2}
+  - {fileID: 11400000, guid: 2d7624b249354404bc9555a7f2fd4980, type: 2}
+  - {fileID: 11400000, guid: f403bd18784b401399c2a0a47ad689ee, type: 2}
+  - {fileID: 11400000, guid: 8583a31c920046289ce23d0f363086ab, type: 2}
+  - {fileID: 11400000, guid: a56012ac31884089bd47b42ad5ebf126, type: 2}
+  - {fileID: 11400000, guid: 057c31e7623741569459e61f115a2127, type: 2}
+  - {fileID: 11400000, guid: 2908ca62301b4898b49bb4ae9215e162, type: 2}
+  - {fileID: 11400000, guid: bec799e2e6014e73a4d99eb6524cde77, type: 2}
+  - {fileID: 11400000, guid: 34fb4ce6f59044ffa6031383f3a72f6f, type: 2}
