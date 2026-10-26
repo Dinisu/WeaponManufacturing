@@ -127,6 +127,15 @@ namespace App.BaseSystem.DataStores.ScriptableObjects.Status
         
         [SerializeField, Header("受けているアイテムバフ")]
         public List<ActiveBuff<D_It_StatusData>> ActiveBuffs_It = new();//アイテムバフのデータ管理
+
+        public int Price
+        {
+            get => price;
+            set => price = value;
+        }
+        [SerializeField, Header("値段")]
+        private int price;
+
         public enum Abnormalstatus
         {
             None

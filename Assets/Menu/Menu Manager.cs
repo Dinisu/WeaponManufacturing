@@ -11,8 +11,11 @@ public class MenuManager : MonoBehaviour
     private List<BackgroundData> backgrounds;
     [SerializeField, Header("アイテム表示プレハブ")]
     private GameObject data_UI;
+    [SerializeField, Header("売買表示プレハブ")]
+    private GameObject buyAndSellDataUI;
 
     private Db_It_StatusDataBase db_PlayerItem;//所持アイテムデータベース
+    private Db_It_StatusDataBase db_Merchandise;//購入商品データベース
     private Db_Eq_StatusDataBase db_PossessedEq;//所持装備データベース
     private Db_Eq_StatusDataBase db_EquippedWeapon;
     private Dss_It_StatusDataStores dss_It_StatusDataStores;
@@ -23,6 +26,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private BattleManager battleManager;
     // Enchantment画面の選択UIを管理する。未設定時はシーン内から検索する。
     [SerializeField] private EnchantmentManager enchantmentManager;
+    [SerializeField] private BuyAndSellManager buyAndSellManager;
 
     private void Awake()
     {
@@ -35,8 +39,9 @@ public class MenuManager : MonoBehaviour
         }
 
         // FindDatabaseWithName を使用して Player_Item データベースを取得
-        db_PlayerItem = dss_It_StatusDataStores.FindDatabaseWithName("Possessed_Item");
-        db_PossessedEq = dss_Eq_StatusDataStores.FindDatabaseWithName("Possessed Equipment");
+        db_PlayerItem = dss_It_StatusDataStores?.FindDatabaseWithName("Possessed_Item");
+        db_Merchandise = dss_It_StatusDataStores?.FindDatabaseWithName("For search_Item");
+        db_PossessedEq = dss_Eq_StatusDataStores?.FindDatabaseWithName("Possessed Equipment");
         db_EquippedWeapon = dss_Eq_StatusDataStores?.FindDatabaseWithName("Equipped weapon");
     }
     /// <summary>
@@ -66,6 +71,7 @@ public class MenuManager : MonoBehaviour
     /// </summary>
     public void Next_Battle()
     {
+        buyAndSellManager?.CancelPendingTransaction();
         foreach (var data in backgrounds)
         {
             if (data.type == BackgroundType.Battle)
@@ -86,6 +92,7 @@ public class MenuManager : MonoBehaviour
     /// </summary>
     public void Next_Blacksmit()
     {
+        buyAndSellManager?.CancelPendingTransaction();
         foreach (var data in backgrounds)
         {
             if (data.type == BackgroundType.Blacksmith)
@@ -106,6 +113,7 @@ public class MenuManager : MonoBehaviour
     /// </summary>
     public void Next_Enchantment()
     {
+        buyAndSellManager?.CancelPendingTransaction();
         foreach (var data in backgrounds)
         {
             if (data.type == BackgroundType.Enchantment)
@@ -121,8 +129,30 @@ public class MenuManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 売買画面に移行
+    /// </summary>
+    public void Next_BuyAndSell()
+    {
+        buyAndSellManager?.CancelPendingTransaction();
+        foreach (var data in backgrounds)
+        {
+            if (data.type == BackgroundType.BuyAndSell)
+            {
+                data.background.SetActive(true);
+                buyAndSellManager?.Begin(buyAndSellDataUI, db_PlayerItem, db_Merchandise,
+                    db_PossessedEq, db_EquippedWeapon);
+            }
+            else
+            {
+                data.background.SetActive(false);
+            }
+        }
+    }
+
     public void Next_Warehouse()
     {
+        buyAndSellManager?.CancelPendingTransaction();
         foreach (var data in backgrounds)
         {
             if (data.type == BackgroundType.Warehouse)

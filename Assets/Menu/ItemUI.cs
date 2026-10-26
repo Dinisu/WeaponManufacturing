@@ -85,6 +85,22 @@ public class ItemUI : MonoBehaviour
         numberText.text = "";
     }
 
+    /// <summary>売買専用UIの名前と価格を表示し、必要に応じて個数表示を隠す。</summary>
+    public void SetBuyAndSellDisplay(string dataName, int price, bool showNumber)
+    {
+        Transform nameField = transform.Find("Name");
+        Transform priceField = transform.Find("Price");
+        TextMeshProUGUI nameText = nameField != null ? nameField.GetComponentInChildren<TextMeshProUGUI>(true) : null;
+        TextMeshProUGUI priceText = priceField != null ? priceField.GetComponentInChildren<TextMeshProUGUI>(true) : null;
+
+        if (nameText != null)
+            nameText.text = dataName;
+        if (priceText != null)
+            priceText.text = $"{price}$";
+        if (!showNumber)
+            HideNumber();
+    }
+
     /// <summary>
     /// 鍛冶に使用するアイテム選択処理の呼び出し
     /// </summary>
