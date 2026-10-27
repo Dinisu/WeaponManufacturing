@@ -170,10 +170,10 @@ public class BlacksmithGameManager : MonoBehaviour
     /// </summary>
     private string GetWeaponPrefix(int score)
     {
-        if (score >= 45)
+        if (score >= 40)
             return "ì`ê‡ÇÃ";
 
-        if (score >= 35)
+        if (score >= 30)
             return "ñºçHÇÃ";
 
         if (score >= 25)
@@ -201,8 +201,6 @@ public class BlacksmithGameManager : MonoBehaviour
 
         string prefix = GetWeaponPrefix(score);
 
-        weapon.Name = $"{prefix}åï";
-
         //IDê›íË
         weapon.Id = GetNewEquipmentID();
 
@@ -226,6 +224,8 @@ public class BlacksmithGameManager : MonoBehaviour
 
         // ÉAÉCÉRÉì
         weapon.DataIcon = GetRandomIcon(weapon.SeeRarity);
+        string iconName = weapon.DataIcon != null ? weapon.DataIcon.name : "ïêäÌ";
+        weapon.Name = $"{prefix}{iconName}";
 
         db_PossessedEq.ItemList.Add(weapon);
 

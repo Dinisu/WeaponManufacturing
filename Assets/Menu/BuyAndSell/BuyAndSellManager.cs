@@ -40,6 +40,8 @@ public class BuyAndSellManager : MonoBehaviour
 
     [Header("テキスト")]
     [SerializeField]
+    private TMP_Text PlayerMoneyText; // プレイヤーの所持金を表示するテキスト。
+    [SerializeField]
     private TMP_Text decisionButtonText; // 確定ボタンに表示する購入または売却の文字。
     [SerializeField]
     private TMP_Text amountText; // 現在選択中の取引合計額を表示するテキスト。
@@ -68,6 +70,7 @@ public class BuyAndSellManager : MonoBehaviour
         currentMode = TradeMode.None;
 
         UpdateAmount();
+        UpdatePlayerMoneyText();
         if (selectionPanel != null) selectionPanel.gameObject.SetActive(true);
         if (buySellField != null) buySellField.gameObject.SetActive(false);
     }
@@ -292,6 +295,8 @@ public class BuyAndSellManager : MonoBehaviour
             }
         }
 
+        UpdatePlayerMoneyText();
+
         // 決定後は所持数を戻さず、選択表示だけを消して一覧を更新する。
         foreach (SelectedTrade trade in selectedTrades)
         {
@@ -363,6 +368,13 @@ public class BuyAndSellManager : MonoBehaviour
     {
         if (amountText != null)
             amountText.text = $"{CalculateTotal()}$";
+    }
+
+    /// <summary>GameManagerの所持金を画面のテキストへ反映する。</summary>
+    private void UpdatePlayerMoneyText()
+    {
+        if (PlayerMoneyText != null && GameManager.Instance != null)
+            PlayerMoneyText.text = $"{GameManager.Instance.PlayerMoney}$";
     }
 
     /// <summary>選択中取引の価格を合算して返す。</summary>

@@ -30,6 +30,11 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private float backgroundScrollSpeed = 2f; // 背景スクロール速度
     [SerializeField] private float backgroundLoopWidth = 40f; // パネルループ幅
 
+    [Header("地面スクロール")]
+    [SerializeField] private Transform[] groundPanels; // スクロールする地面パネル
+    [SerializeField] private float groundScrollSpeed = 2f; // 地面スクロール速度
+    [SerializeField] private float groundLoopWidth = 40f; // 地面パネルループ幅
+
     [Header("敵出現")]
     [SerializeField] private float enemySpawnInterval = 3f; // 敵生成間隔
     [SerializeField] private float enemySpawnX = 12f; // 敵出現X座標（Canvas ルートのローカル座標）
@@ -99,6 +104,7 @@ public class BattleManager : MonoBehaviour
         if (!stopScroll)
         {
             ScrollBackground();
+            ScrollGround();
             progressDistance += progressPerSecond * Time.deltaTime;
             UpdateProgressText();
         }
@@ -254,6 +260,28 @@ public class BattleManager : MonoBehaviour
             if (panel.position.x < -backgroundLoopWidth)
             {
                 panel.position += Vector3.right * backgroundLoopWidth * backgroundPanels.Length;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 地面を左へスクロールし、画面外になったパネルをループさせる
+    /// </summary>
+    private void ScrollGround()
+    {
+        if (groundPanels == null || groundPanels.Length == 0)
+            return;
+
+        foreach (var panel in groundPanels)
+        {
+            if (panel == null)
+                continue;
+
+            panel.position += Vector3.left * groundScrollSpeed * Time.deltaTime;
+
+            if (panel.position.x < -groundLoopWidth)
+            {
+                panel.position += Vector3.right * groundLoopWidth * groundPanels.Length;
             }
         }
     }
