@@ -445,14 +445,17 @@ public class BattleManager : MonoBehaviour
         if (magicPrefab == null || magicMissile == null || magicSpawnPoint == null)
             return;
 
-        var magicObject = Instantiate(magicPrefab, magicSpawnPoint.position, magicSpawnPoint.rotation);
+        var magicObject = Instantiate(
+            magicPrefab,
+            magicSpawnPoint.position,
+            magicSpawnPoint.rotation,
+            magicSpawnPoint);
         var magicUI = magicObject.GetComponent<MagicUI>();
         if (magicUI != null)
         {
             magicUI.ActivationSpell = magicMissile;
         }
 
-        Destroy(magicObject, 5f);
     }
 
     /// <summary>
