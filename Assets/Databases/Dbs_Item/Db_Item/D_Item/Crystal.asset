@@ -19,7 +19,7 @@ MonoBehaviour:
   rarity: 0
   attribute: 0
   kinds: 7
-  buff_DeBuff_kind: 1
+  buff_DeBuff_kind: 0
   Equipment:
     MaxHpup: 0
     MaxMpup: 0
@@ -33,7 +33,7 @@ MonoBehaviour:
   efficacy2: 0
   criticalRate: 0
   duration: 0
-  number: 94
+  number: 88
   price: 0
   DataIcon: {fileID: 0}
   Effect: {fileID: 0}

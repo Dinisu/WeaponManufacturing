@@ -52,6 +52,7 @@ public class BattleManager : MonoBehaviour
     private Db_It_StatusDataBase db_PlayerItem; // 所持アイテムDB
     private Db_Eq_StatusDataBase db_EquippedWeapon; // 所持装備DB
     private Db_Ch_StatusDataBase db_EnemyList; // 敵リストDB
+    private HealthGauge playerHealthGauge; // プレイヤーの体力ゲージ。
 
     private float spawnTimer;
     private float progressDistance;
@@ -89,6 +90,8 @@ public class BattleManager : MonoBehaviour
         }
 
         runtimePlayer = CreateRuntimePlayer();
+        statusData.Hp = runtimePlayer.Hp;
+        UpdatePlayerHealthGauge();
 
         // 装備中の武器を画面に生成
         SpawnEquippedWeapons();
@@ -475,6 +478,8 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         runtimePlayer = CreateRuntimePlayer();
+        statusData.Hp = runtimePlayer.Hp;
+        UpdatePlayerHealthGauge();
         SpawnEquippedWeapons();
 
         stopScroll = false;
@@ -642,6 +647,8 @@ public class BattleManager : MonoBehaviour
             return;
 
         runtimePlayer.Hp = Mathf.Max(0, runtimePlayer.Hp - amount);
+        statusData.Hp = runtimePlayer.Hp;
+        UpdatePlayerHealthGauge(damagedObject);
 
         if (damagedObject != null)
         {
@@ -651,6 +658,28 @@ public class BattleManager : MonoBehaviour
                 popup.ShowDamage(amount);
             }
         }
+    }
+
+    /// <summary>プレイヤーの現在HPを体力ゲージへ反映する。</summary>
+    private void UpdatePlayerHealthGauge(GameObject playerObject = null)
+    {
+        if (playerHealthGauge == null)
+        {
+            if (playerObject == null)
+                playerObject = GameObject.FindWithTag("Player");
+
+            if (playerObject != null)
+                playerHealthGauge = playerObject.GetComponentInChildren<HealthGauge>(true);
+        }
+
+        if (playerHealthGauge == null)
+            playerHealthGauge = FindAnyObjectByType<HealthGauge>();
+
+        if (playerHealthGauge == null)
+            return;
+
+        playerHealthGauge.statusData = statusData;
+        playerHealthGauge.GaugeManagement();
     }
 
     // 敵にダメージを与える。BattleUI から呼ばれる。
