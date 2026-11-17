@@ -205,6 +205,12 @@ public class BlacksmithGameManager : MonoBehaviour
         weapon.Id = GetNewEquipmentID();
 
         // ステータス
+        // レア度を先に決め、能力値へレア度補正を適用する。
+        weapon.SeeRarity = CalculateRarity(
+            material1.SeeRarity,
+            material2.SeeRarity,
+            score);
+
         SetStatus(weapon, material1, material2, score);
         // ステータス合計を武器の価格として設定する。
         weapon.Price = Mathf.CeilToInt(weapon.MaxHp + weapon.MaxMp + weapon.Attack + weapon.Magic +
@@ -212,12 +218,6 @@ public class BlacksmithGameManager : MonoBehaviour
 
         // エンチャント解除時に戻せるよう、作成時点の武器能力値を保存する。
         weapon.SaveOriginalStats();
-
-        // レア度
-        weapon.SeeRarity = CalculateRarity(
-            material1.SeeRarity,
-            material2.SeeRarity,
-            score);
 
         // 属性
         weapon.SeeAttribute =
@@ -282,7 +282,8 @@ public class BlacksmithGameManager : MonoBehaviour
     private void SetStatus(D_Eq_StatusData weapon,D_It_StatusData material1, D_It_StatusData material2,int score)
     {
         //スコア10→10％上昇
-        float rate = 1f + score * 0.01f;
+        float scoreRate = 1f + score * 0.01f;
+        float rate = scoreRate * GetRarityMultiplier(weapon.SeeRarity);
 
         weapon.MaxHp =
             Mathf.RoundToInt((material1.Equipment.MaxHpup + material2.Equipment.MaxHpup) * rate);
@@ -309,9 +310,20 @@ public class BlacksmithGameManager : MonoBehaviour
             Mathf.RoundToInt((material1.Equipment.Criticalup + material2.Equipment.Criticalup) * rate);
     }
 
-    /// <summary>
-    /// レア度の設定
-    /// </summary>
+    /// <summary>レア度に応じた武器ステータス補正倍率を返す。</summary>
+    private float GetRarityMultiplier(Rarity rarity)
+    {
+        switch (rarity)
+        {
+            case Rarity.Common: return 1.1f;
+            case Rarity.Uncommon: return 1.2f;
+            case Rarity.Rare: return 1.5f;
+            case Rarity.Epic: return 2.0f;
+            case Rarity.Legendary: return 3.0f;
+            default: return 1.1f;
+        }
+    }
+    /// <summary>素材とスコアから武器のレア度を算出する。</summary>
     private Rarity CalculateRarity(Rarity r1,Rarity r2,int score)
     {
         int a = (int)r1;

@@ -41,6 +41,10 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private float enemySpawnY = 0f; // 敵出現Y座標（Canvas ルートのローカル座標）
     [SerializeField] private RectTransform enemyCanvasRoot; // 敵を配置する Canvas 内の親
 
+    [Header("敵出現")]
+    [SerializeField] private GameObject DropTextList;
+    [SerializeField] private GameObject DropText;
+
     [Header("進捗表示")]
     [SerializeField] private TextMeshProUGUI progressText; // 進捗表示用テキスト
     [SerializeField] private float progressPerSecond = 1f; // 1秒あたりの進捗量
@@ -637,7 +641,27 @@ public class BattleManager : MonoBehaviour
             Debug.Log($"アイテムドロップ: {dropItem.Name} を新規入手 ({dropItem.Number}個)");
         }
 
+        ShowDropText(dropItem.Name);
         return true;
+    }
+
+    /// <summary>入手したアイテム名を通知UIに表示し、数秒後に削除する。</summary>
+    private void ShowDropText(string itemName)
+    {
+        if (DropTextList == null || DropText == null)
+            return;
+
+        GameObject dropTextObject = Instantiate(DropText, DropTextList.transform, false);
+        TMP_Text text = dropTextObject.GetComponentInChildren<TMP_Text>(true);
+        if (text == null)
+        {
+            Debug.LogWarning("[BattleManager] DropTextにTMP_Textが設定されていません。");
+            Destroy(dropTextObject);
+            return;
+        }
+
+        text.text = $"{itemName}を入手しました";
+        Destroy(dropTextObject, 3f);
     }
 
     // プレイヤーにダメージを与える。EnemyBehavior から呼ばれる。
