@@ -35,6 +35,9 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private float groundScrollSpeed = 2f; // 地面スクロール速度
     [SerializeField] private float groundLoopWidth = 40f; // 地面パネルループ幅
 
+    [Header("敵接近時のスクロール停止")]
+    [SerializeField] private float scrollStopDistance = 300f; // 敵がこの距離以内に入るとスクロールを停止
+
     [Header("敵出現")]
     [SerializeField] private float enemySpawnInterval = 3f; // 敵生成間隔
     [SerializeField] private float enemySpawnX = 12f; // 敵出現X座標（Canvas ルートのローカル座標）
@@ -124,6 +127,7 @@ public class BattleManager : MonoBehaviour
         }
 
         CheckEnemyPositions();
+        UpdateScrollStopState();
 
         // 左クリックで魔法発射
         if (Keyboard.current.spaceKey.wasPressedThisFrame)
@@ -322,6 +326,35 @@ public class BattleManager : MonoBehaviour
             {
                 Destroy(enemy);
                 spawnedEnemies.RemoveAt(i);
+            }
+        }
+    }
+
+    /// <summary>
+    /// プレイヤーに近い敵がいる間、背景・地面スクロールと進捗を停止する
+    /// </summary>
+    private void UpdateScrollStopState()
+    {
+        var player = GameObject.FindWithTag("Player");
+        if (player == null)
+        {
+            stopScroll = false;
+            return;
+        }
+
+        stopScroll = false;
+        foreach (var enemy in spawnedEnemies)
+        {
+            if (enemy == null)
+                continue;
+
+            // UI上の敵とプレイヤーの位置を同じ座標系で比較する
+            Vector2 enemyPosition = enemy.transform.position;
+            Vector2 playerPosition = player.transform.position;
+            if (Vector2.Distance(enemyPosition, playerPosition) <= scrollStopDistance)
+            {
+                stopScroll = true;
+                return;
             }
         }
     }
