@@ -15,7 +15,7 @@ MonoBehaviour:
   name: "狙いの印"
   id: 0
   ItemDescription:
-  EfficacyItemDescription:
+  EfficacyItemDescription: "刻印の力で、装備のクリティカル率を元の値の1.1倍に高める。"
   rarity: 0
   attribute: 0
   skillRange: 1

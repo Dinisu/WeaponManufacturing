@@ -15,7 +15,7 @@ MonoBehaviour:
   name: "疾駆のルーン"
   id: 0
   ItemDescription:
-  EfficacyItemDescription:
+  EfficacyItemDescription: "ルーンの魔力で、装備の速度を元の値の1.6倍に高める。"
   rarity: 2
   attribute: 0
   skillRange: 1

@@ -15,7 +15,7 @@ MonoBehaviour:
   name: "魔力の刻印"
   id: 0
   ItemDescription:
-  EfficacyItemDescription:
+  EfficacyItemDescription: "刻印に秘められた力が、装備の魔力を元の値の1.2倍に高める。"
   rarity: 1
   attribute: 0
   skillRange: 1
