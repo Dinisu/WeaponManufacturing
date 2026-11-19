@@ -27,6 +27,7 @@ public class MenuManager : MonoBehaviour
     // Enchantment画面の選択UIを管理する。未設定時はシーン内から検索する。
     [SerializeField] private EnchantmentManager enchantmentManager;
     [SerializeField] private BuyAndSellManager buyAndSellManager;
+    [SerializeField] private DetailsPanelManager detailsPanelManager; // ホバー中の素材・装備詳細を表示する。
 
     private void Awake()
     {
@@ -36,6 +37,10 @@ public class MenuManager : MonoBehaviour
         if (enchantmentManager == null)
         {
             enchantmentManager = FindAnyObjectByType<EnchantmentManager>();
+        }
+        if (detailsPanelManager == null)
+        {
+            detailsPanelManager = FindAnyObjectByType<DetailsPanelManager>();
         }
 
         // FindDatabaseWithName を使用して Player_Item データベースを取得
@@ -71,6 +76,7 @@ public class MenuManager : MonoBehaviour
     /// </summary>
     public void Next_Battle()
     {
+        detailsPanelManager?.HideDetails();
         buyAndSellManager?.CancelPendingTransaction();
         foreach (var data in backgrounds)
         {
@@ -92,6 +98,7 @@ public class MenuManager : MonoBehaviour
     /// </summary>
     public void Next_Blacksmit()
     {
+        detailsPanelManager?.HideDetails();
         buyAndSellManager?.CancelPendingTransaction();
         foreach (var data in backgrounds)
         {
@@ -113,6 +120,7 @@ public class MenuManager : MonoBehaviour
     /// </summary>
     public void Next_Enchantment()
     {
+        detailsPanelManager?.HideDetails();
         buyAndSellManager?.CancelPendingTransaction();
         foreach (var data in backgrounds)
         {
@@ -134,6 +142,7 @@ public class MenuManager : MonoBehaviour
     /// </summary>
     public void Next_BuyAndSell()
     {
+        detailsPanelManager?.HideDetails();
         buyAndSellManager?.CancelPendingTransaction();
         foreach (var data in backgrounds)
         {
@@ -152,6 +161,7 @@ public class MenuManager : MonoBehaviour
 
     public void Next_Warehouse()
     {
+        detailsPanelManager?.HideDetails();
         buyAndSellManager?.CancelPendingTransaction();
         foreach (var data in backgrounds)
         {
@@ -174,6 +184,8 @@ public class MenuManager : MonoBehaviour
     /// </summary>
     public void UIGeneration(BackgroundType blacksmith)
     {
+        // UI一覧を作り直す前に、古いUIに紐付いた詳細表示を閉じる。
+        detailsPanelManager?.HideDetails();
 
         foreach (var data in backgrounds)
         {

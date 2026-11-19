@@ -6,9 +6,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using static UnityEditor.Progress;
 
-public class ItemUI : MonoBehaviour
+public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private Image itemImage;
     [SerializeField] private Image rarityColor;
@@ -18,11 +19,19 @@ public class ItemUI : MonoBehaviour
 
     [Header("素材データ")]
     public D_It_StatusData ItemData;
+    public D_Eq_StatusData EquipmentData; // ホバー詳細に表示する装備データ
 
     private BlacksmithManager blacksmithManager;
     private WarehouseManager warehouseManager;
+    private DetailsPanelManager detailsPanelManager; // 素材・装備のホバー詳細を表示するマネージャー
     // Enchantment画面で選択操作を受け渡すマネージャー。
     private EnchantmentManager enchantmentManager;
+
+    private void Awake()
+    {
+        // UIプレハブが生成された時点でシーン内の詳細表示マネージャーを取得する。
+        ResolveDetailsPanelManager();
+    }
 
 
     /// <summary>
@@ -37,6 +46,7 @@ public class ItemUI : MonoBehaviour
         this.sourceItemUI = sourceItemUI;
 
         ItemData = itemData;                          //鍛造などで参照出来るように。
+        EquipmentData = null;
 
         itemImage.type = Image.Type.Simple;
         itemImage.preserveAspect = true;
@@ -59,6 +69,9 @@ public class ItemUI : MonoBehaviour
         enchantmentManager = enchantment;
         this.sourceItemUI = sourceItemUI;
 
+        ItemData = null;
+        EquipmentData = itemData;
+
         itemImage.type = Image.Type.Simple;
         itemImage.preserveAspect = true;
         itemImage.sprite = itemData.DataIcon;         // UIに画面を入れる
@@ -67,6 +80,38 @@ public class ItemUI : MonoBehaviour
         //このボタンの処理設定
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(action);
+    }
+
+    /// <summary>ポインターがUIに入ったら、対応する詳細パネルを表示する。</summary>
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        ResolveDetailsPanelManager();
+        if (detailsPanelManager == null)
+            return;
+
+        if (ItemData != null)
+            detailsPanelManager.ShowItemDetails(ItemData, this);
+        else if (EquipmentData != null)
+            detailsPanelManager.ShowWeaponDetails(EquipmentData, this);
+    }
+
+    /// <summary>ポインターがUIから出たら、このUIが表示元の場合だけ詳細を閉じる。</summary>
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        detailsPanelManager?.HideDetails(this);
+    }
+
+    private void OnDisable()
+    {
+        // 選択や画面更新でUIが非表示になる場合も詳細を残さない。
+        detailsPanelManager?.HideDetails(this);
+    }
+
+    /// <summary>初期化順に関わらず詳細マネージャー参照を取得する。</summary>
+    private void ResolveDetailsPanelManager()
+    {
+        if (detailsPanelManager == null)
+            detailsPanelManager = FindAnyObjectByType<DetailsPanelManager>();
     }
 
     /// <summary>

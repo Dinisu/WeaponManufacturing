@@ -3497,6 +3497,7 @@ GameObject:
   m_Component:
   - component: {fileID: 470259684}
   - component: {fileID: 470259683}
+  - component: {fileID: 470259685}
   m_Layer: 5
   m_Name: Menu Manager
   m_TagString: Untagged
@@ -3544,6 +3545,7 @@ MonoBehaviour:
   battleManager: {fileID: 1184496323}
   enchantmentManager: {fileID: 836973165}
   buyAndSellManager: {fileID: 522820056}
+  detailsPanelManager: {fileID: 470259685}
 --- !u!224 &470259684
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3563,6 +3565,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &470259685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 470259682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b003abc8e4b4834fa9971d22249f233, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DetailsPanelManager
+  panelRoot: {fileID: 1552497099}
+  itemDetailsPanelPrefab: {fileID: 100000, guid: 03b240fb0f9b4147856c656749f3b971, type: 3}
+  weaponDetailsPanelPrefab: {fileID: 100000, guid: f72bb99d73014ec7b8a860f3a03017fc, type: 3}
+  panelScreenPadding: 24
 --- !u!1 &490659081
 GameObject:
   m_ObjectHideFlags: 0
@@ -8522,6 +8540,7 @@ MonoBehaviour:
   - {fileID: 946458730}
   groundScrollSpeed: 100
   groundLoopWidth: 1900
+  scrollStopDistance: 300
   enemySpawnInterval: 5
   enemySpawnX: 1013
   enemySpawnY: -400

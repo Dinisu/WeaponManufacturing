@@ -16,6 +16,21 @@ namespace App.BaseSystem.DataStores.ScriptableObjects.Status
         [SerializeField, Header("レア度")]
         private Rarity rarity;
 
+        public enum Weapon_Or_Armor
+        {
+            Weapon,
+            Armor
+        }
+
+        public Weapon_Or_Armor SeeWeapon_Or_Armor
+        {
+            get => weapon_Or_Armor;
+            set => weapon_Or_Armor = value;
+        }
+
+        [SerializeField, Header("武器か防具")]
+        private Weapon_Or_Armor weapon_Or_Armor;
+
         public enum Attribute
         {
             //上から無、火、水、木、金、土

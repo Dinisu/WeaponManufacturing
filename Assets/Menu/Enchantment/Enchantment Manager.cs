@@ -5,6 +5,16 @@ using UnityEngine;
 
 public class EnchantmentManager : MonoBehaviour
 {
+    // 武器にはDefense以外のバフ種類からエンチャントを付与する。
+    private static readonly D_Sk_StatusData.Buff_DeBuff_Kinds[] weaponBuffKinds =
+    {
+        D_Sk_StatusData.Buff_DeBuff_Kinds.Attack,
+        D_Sk_StatusData.Buff_DeBuff_Kinds.Magic,
+        D_Sk_StatusData.Buff_DeBuff_Kinds.MagicDefense,
+        D_Sk_StatusData.Buff_DeBuff_Kinds.Speed,
+        D_Sk_StatusData.Buff_DeBuff_Kinds.Critical
+    };
+
     [Header("選択枠")]
     // 選択した武器と素材を表示する枠。画面UIはInspectorから割り当てる。
     [SerializeField] private Transform selectedWeaponSlot;
@@ -174,17 +184,16 @@ public class EnchantmentManager : MonoBehaviour
         Rarity selectedRarity = (Rarity)DrawWeightedValue(
             (int)Rarity.Common,
             material => (int)material.SeeRarity);
+        bool isWeapon = selectedWeaponData.SeeWeapon_Or_Armor == D_Eq_StatusData.Weapon_Or_Armor.Weapon;
         D_Sk_StatusData.Buff_DeBuff_Kinds selectedBuffKind =
             (D_Sk_StatusData.Buff_DeBuff_Kinds)DrawWeightedValue(
                 (int)D_Sk_StatusData.Buff_DeBuff_Kinds.Attack,
-                material => material.SeeBuff_DeBuff_Kinds == D_It_StatusData.Buff_DeBuff_Kinds.None
-                    ? Random.Range((int)D_Sk_StatusData.Buff_DeBuff_Kinds.Attack,
-                        (int)D_Sk_StatusData.Buff_DeBuff_Kinds.Critical + 1)
-                    : (int)material.SeeBuff_DeBuff_Kinds);
+                material => SelectBuffKindForMaterial(material, isWeapon));
 
         System.Collections.Generic.List<D_Sk_StatusData> candidates = enchantSkillDatabase.ItemList.FindAll(
             skill => skill != null && skill.SeeRarity == selectedRarity &&
-                     skill.SeeBuff_DeBuff_Kinds == selectedBuffKind);
+                     skill.SeeBuff_DeBuff_Kinds == selectedBuffKind &&
+                     (!isWeapon || skill.SeeBuff_DeBuff_Kinds != D_Sk_StatusData.Buff_DeBuff_Kinds.Defense));
         if (candidates.Count == 0)
         {
             Debug.LogWarning($"レア度{selectedRarity}、バフ{selectedBuffKind}のスキルデータがありません。");
@@ -200,6 +209,33 @@ public class EnchantmentManager : MonoBehaviour
 
         ShowResultMessage($"{skillData.Name}を付与しました。");
         ConsumeSelection();
+    }
+
+    /// <summary>武器ではDefense素材の寄与を許可されたバフ種類へ振り替える。</summary>
+    private int SelectBuffKindForMaterial(D_It_StatusData material, bool isWeapon)
+    {
+        D_Sk_StatusData.Buff_DeBuff_Kinds materialBuffKind =
+            (D_Sk_StatusData.Buff_DeBuff_Kinds)material.SeeBuff_DeBuff_Kinds;
+
+        if (isWeapon && (materialBuffKind == D_Sk_StatusData.Buff_DeBuff_Kinds.Defense ||
+                         materialBuffKind == D_Sk_StatusData.Buff_DeBuff_Kinds.None))
+        {
+            return (int)GetRandomWeaponBuffKind();
+        }
+
+        if (materialBuffKind == D_Sk_StatusData.Buff_DeBuff_Kinds.None)
+        {
+            return Random.Range((int)D_Sk_StatusData.Buff_DeBuff_Kinds.Attack,
+                (int)D_Sk_StatusData.Buff_DeBuff_Kinds.Critical + 1);
+        }
+
+        return (int)materialBuffKind;
+    }
+
+    /// <summary>武器に付与可能なDefense以外のバフ種類をランダムに選ぶ。</summary>
+    private D_Sk_StatusData.Buff_DeBuff_Kinds GetRandomWeaponBuffKind()
+    {
+        return weaponBuffKinds[Random.Range(0, weaponBuffKinds.Length)];
     }
 
     /// <summary>CommonまたはAttackの1ポイントを含む100ポイントから値を抽選する。</summary>

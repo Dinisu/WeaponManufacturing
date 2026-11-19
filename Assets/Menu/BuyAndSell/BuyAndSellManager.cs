@@ -54,12 +54,20 @@ public class BuyAndSellManager : MonoBehaviour
     private readonly List<GameObject> sourceUIs = new List<GameObject>(); // 現在の一覧領域に生成したUI。画面更新時に破棄する。
     private readonly List<SelectedTrade> selectedTrades = new List<SelectedTrade>(); // 購入または売却候補として選ばれている取引。
     private TradeMode currentMode; // 現在の売買画面で選択されている取引方法。
+    private DetailsPanelManager detailsPanelManager; // 売買対象UIのホバー詳細を表示するマネージャー。
+
+    private void Awake()
+    {
+        // Inspector参照がない場合もシーン内の詳細マネージャーを取得する。
+        detailsPanelManager = FindAnyObjectByType<DetailsPanelManager>();
+    }
 
     /// <summary>MenuManagerから売買データベースと表示プレハブを受け取る。</summary>
     public void Begin(GameObject itemPrefab, Db_It_StatusDataBase possessedItems,
         Db_It_StatusDataBase merchandise, Db_Eq_StatusDataBase possessedEquipment,
         Db_Eq_StatusDataBase equippedEquipment)
     {
+        detailsPanelManager?.HideDetails();
         CancelPendingTransaction();
         ClearSourceUIs();
         buyAndSellDataUI = itemPrefab;
@@ -78,6 +86,7 @@ public class BuyAndSellManager : MonoBehaviour
     /// <summary>画面を離れる際に選択分を戻して売買画面のUIを片付ける。</summary>
     public void CancelPendingTransaction()
     {
+        detailsPanelManager?.HideDetails();
         foreach (SelectedTrade trade in selectedTrades.ToArray())
         {
             if (!trade.isPurchase)
@@ -164,6 +173,8 @@ public class BuyAndSellManager : MonoBehaviour
     /// <summary>指定された売買モードに合わせて画面と合計額を更新する。</summary>
     private void PrepareMode(TradeMode mode)
     {
+        // 購入・売却の一覧を作り替える前に現在の詳細を閉じる。
+        detailsPanelManager?.HideDetails();
         ClearSourceUIs();
         currentMode = mode;
         if (selectionPanel != null) selectionPanel.gameObject.SetActive(false);
