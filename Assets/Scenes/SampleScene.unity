@@ -11986,7 +11986,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GaugeController
   pointer: {fileID: 1014502284}
   gauge: {fileID: 1797916049}
-  speed: 400
+  speed: 800
 --- !u!114 &1797916053
 MonoBehaviour:
   m_ObjectHideFlags: 0

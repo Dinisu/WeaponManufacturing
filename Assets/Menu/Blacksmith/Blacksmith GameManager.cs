@@ -36,6 +36,7 @@ public class BlacksmithGameManager : MonoBehaviour
 
     private int successCount;
     private int greatCount;
+    private int missCount; // 失敗判定の回数
 
     private Db_Eq_StatusDataBase db_PossessedEq;
     private Dss_Eq_StatusDataStores dss_Eq_StatusDataStores;
@@ -58,6 +59,7 @@ public class BlacksmithGameManager : MonoBehaviour
 
         successCount = 0;
         greatCount = 0;
+        missCount = 0;
 
         timer = forgingTime;
 
@@ -125,6 +127,7 @@ public class BlacksmithGameManager : MonoBehaviour
                 break;
 
             default:
+                missCount++; // 失敗はスコアの減点に反映する。
                 resultText.color = Color.white;
                 resultText.text = "失敗";
                 break;
@@ -170,13 +173,13 @@ public class BlacksmithGameManager : MonoBehaviour
     /// </summary>
     private string GetWeaponPrefix(int score)
     {
-        if (score >= 40)
+        if (score >= 65)
             return "伝説の";
 
-        if (score >= 30)
+        if (score >= 50)
             return "名工の";
 
-        if (score >= 25)
+        if (score >= 35)
             return "熟練の";
 
         if (score >= 20)
@@ -197,7 +200,8 @@ public class BlacksmithGameManager : MonoBehaviour
 
         D_Eq_StatusData weapon = ScriptableObject.CreateInstance<D_Eq_StatusData>();
 
-        int score = successCount * 2 + greatCount * 3;
+        // 失敗を減点し、結果スコアは0未満にならないようにする。
+        int score = Mathf.Max(0, successCount * 3 + greatCount * 5 - missCount * 2);
 
         string prefix = GetWeaponPrefix(score);
 
@@ -236,6 +240,7 @@ public class BlacksmithGameManager : MonoBehaviour
 
         Debug.Log($"成功:{successCount}");
         Debug.Log($"大成功:{greatCount}");
+        Debug.Log($"失敗:{missCount}");
         Debug.Log($"スコア:{score}");
 
         return weapon;
@@ -282,7 +287,8 @@ public class BlacksmithGameManager : MonoBehaviour
     private void SetStatus(D_Eq_StatusData weapon,D_It_StatusData material1, D_It_StatusData material2,int score)
     {
         //スコア10→10％上昇
-        float scoreRate = 1f + score * 0.01f;
+        // スコア補正は1点ごとに0.5%、最大1.5倍とする。
+        float scoreRate = 1f + Mathf.Clamp(score, 0, 100) * 0.005f;
         float rate = scoreRate * GetRarityMultiplier(weapon.SeeRarity);
 
         weapon.MaxHp =
@@ -335,7 +341,8 @@ public class BlacksmithGameManager : MonoBehaviour
         int min = Mathf.Min(a, b);
         int max = Mathf.Max(a, b);
 
-        float t = Mathf.Clamp01(score / 30f);
+        // 材料レア度の最大までの補間をスコア条件110点に合わせる。
+        float t = Mathf.Clamp01(score / 110f);
 
         int rarity =
             Mathf.RoundToInt(Mathf.Lerp(min, max, t));
