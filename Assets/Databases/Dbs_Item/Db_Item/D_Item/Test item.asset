@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8f649b18aab3e44aa8e633b768b9696, type: 3}
+  m_Name: Test item
+  m_EditorClassIdentifier: 
+  name: Test item
+  id: 0
+  ItemDescription: "\u30C6\u30B9\u30C8\u30A2\u30A4\u30C6\u30E0"
+  EfficacyItemDescription: '
+
+'
+  rarity: 0
+  attribute: 0
+  kinds: 0
+  buff_DeBuff_kind: 0
+  Equipment:
+    MaxHpup: 0
+    MaxMpup: 0
+    Attackup: 2
+    Magicup: 0
+    Defenseup: 0
+    MagicDefenseup: 0
+    Speedup: 2
+    Criticalup: 0
+  efficacy1: 0
+  efficacy2: 0
+  criticalRate: 0
+  duration: 0
+  number: 8
+  price: 5
+  DataIcon: {fileID: 90213215145397044, guid: 083c5abb5e1f9244b8533ae00ddf69f1, type: 3}
+  Effect: {fileID: 0}
+  SoundEffects: {fileID: 8300000, guid: bfc94e67c5cde6c46a70dc362de4bb24, type: 3}
+  Event: {fileID: 0}

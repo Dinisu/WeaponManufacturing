@@ -1,4 +1,5 @@
 using App.BaseSystem.DataStores.ScriptableObjects.Status;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -182,6 +183,10 @@ public class BuyAndSellManager : MonoBehaviour
         if (decisionButtonText != null)
             decisionButtonText.text = mode == TradeMode.Buy ? "購入" : "売却";
         UpdateAmount();
+
+        // 売買一覧と選択候補を作り直すため、両方のスクロール位置を先頭へ戻す。
+        StartCoroutine(SetScrollPositionNextFrame(possessionsOrMerchandiseField, false));
+        StartCoroutine(SetScrollPositionNextFrame(somethingToBuyOrSellField, false));
     }
 
     /// <summary>指定された商品を購入候補に追加する。</summary>
@@ -247,7 +252,30 @@ public class BuyAndSellManager : MonoBehaviour
 
         selectedTrades.Add(trade);
         UpdateAmount();
+        // 追加した売買候補が見えるよう、候補一覧の末尾へ移動する。
+        StartCoroutine(SetScrollPositionNextFrame(somethingToBuyOrSellField, true));
         return true;
+    }
+
+    /// <summary>レイアウト反映後に、指定した売買一覧のスクロール位置を設定する。</summary>
+    private IEnumerator SetScrollPositionNextFrame(Transform content, bool scrollToBottom)
+    {
+        yield return null;
+        if (content == null)
+            yield break;
+
+        Canvas.ForceUpdateCanvases();
+        RectTransform contentRect = content as RectTransform;
+        if (contentRect != null)
+            LayoutRebuilder.ForceRebuildLayoutImmediate(contentRect);
+        Canvas.ForceUpdateCanvases();
+
+        ScrollRect scrollRect = content.GetComponentInParent<ScrollRect>();
+        if (scrollRect == null || scrollRect.content != contentRect)
+            yield break;
+
+        scrollRect.StopMovement();
+        scrollRect.verticalNormalizedPosition = scrollToBottom ? 0f : 1f;
     }
 
     /// <summary>選択中の取引を外し、売却品なら所持状態を元に戻す。</summary>

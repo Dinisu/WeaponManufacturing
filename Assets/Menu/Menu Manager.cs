@@ -1,5 +1,6 @@
 using App.BaseSystem.DataStores.ScriptableObjects.Status;
 using NUnit.Framework.Interfaces;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -228,9 +229,33 @@ public class MenuManager : MonoBehaviour
                         break ;
                 }
 
+                // 一覧の再生成後、ScrollRectが設定されていれば先頭へ戻す。
+                StartCoroutine(ResetScrollPosition(data.displayFields, false));
+
                 break;
             }
         }
+    }
+
+    /// <summary>レイアウト反映後に、指定した一覧のスクロール位置を設定する。</summary>
+    private IEnumerator ResetScrollPosition(Transform content, bool scrollToBottom)
+    {
+        yield return null;
+        if (content == null)
+            yield break;
+
+        Canvas.ForceUpdateCanvases();
+        RectTransform contentRect = content as RectTransform;
+        if (contentRect != null)
+            LayoutRebuilder.ForceRebuildLayoutImmediate(contentRect);
+        Canvas.ForceUpdateCanvases();
+
+        ScrollRect scrollRect = content.GetComponentInParent<ScrollRect>();
+        if (scrollRect == null || scrollRect.content != contentRect)
+            yield break;
+
+        scrollRect.StopMovement();
+        scrollRect.verticalNormalizedPosition = scrollToBottom ? 0f : 1f;
     }
 
     /// <summary>
