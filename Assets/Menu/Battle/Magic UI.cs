@@ -133,7 +133,7 @@ public class MagicUI : MonoBehaviour
         if (battleManager != null && battleManager.statusData != null && ActivationSpell != null)
         {
             int damage = Mathf.RoundToInt(
-                battleManager.statusData.Magic * ActivationSpell.Efficacy1);
+                battleManager.GetTotalMagicPower() * ActivationSpell.Efficacy1);
             battleManager.ApplyEnemyDamage(damage, enemy.gameObject);
         }
 

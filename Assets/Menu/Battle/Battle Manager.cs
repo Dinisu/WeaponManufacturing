@@ -129,7 +129,7 @@ public class BattleManager : MonoBehaviour
         CheckEnemyPositions();
         UpdateScrollStopState();
 
-        // 左クリックで魔法発射
+        // Spaceキーで通常魔法を発射
         if (Keyboard.current.spaceKey.wasPressedThisFrame)
         {
             CastMagic();
@@ -202,6 +202,15 @@ public class BattleManager : MonoBehaviour
             player.Speed += equipment.Speed;
             player.CriticalRate += equipment.CriticalRate;
         }
+    }
+
+    /// <summary>プレイヤーと装備中装備を合算した魔力を取得する。</summary>
+    public int GetTotalMagicPower()
+    {
+        if (runtimePlayer != null)
+            return runtimePlayer.Magic;
+
+        return statusData != null ? statusData.Magic : 0;
     }
 
     /// <summary>
@@ -482,8 +491,14 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     private void CastMagic()
     {
-        if (magicPrefab == null || magicMissile == null || magicSpawnPoint == null)
-            return;
+        TryCastMagic(magicMissile);
+    }
+
+    /// <summary>指定された魔法データを使って魔法プレハブを生成する。</summary>
+    public bool TryCastMagic(D_Sk_StatusData spell)
+    {
+        if (!isPlaying || magicPrefab == null || spell == null || magicSpawnPoint == null)
+            return false;
 
         var magicObject = Instantiate(
             magicPrefab,
@@ -491,11 +506,14 @@ public class BattleManager : MonoBehaviour
             magicSpawnPoint.rotation,
             magicSpawnPoint);
         var magicUI = magicObject.GetComponent<MagicUI>();
-        if (magicUI != null)
+        if (magicUI == null)
         {
-            magicUI.ActivationSpell = magicMissile;
+            Destroy(magicObject);
+            return false;
         }
 
+        magicUI.ActivationSpell = spell;
+        return true;
     }
 
     /// <summary>
