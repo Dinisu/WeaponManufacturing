@@ -151,6 +151,12 @@ namespace App.BaseSystem.DataStores.ScriptableObjects.Status
         [SerializeField, Header("値段")]
         private int price;
 
+        /// <summary>武器のステータスから価格を再計算する。</summary>
+        public void RecalculatePriceFromStats()
+        {
+            Price = Mathf.CeilToInt(MaxHp + MaxMp + Attack + Magic + Defense + MagicDefense + Speed + CriticalRate);
+        }
+
         public enum Abnormalstatus
         {
             None
@@ -229,6 +235,9 @@ namespace App.BaseSystem.DataStores.ScriptableObjects.Status
             MagicDefense = Mathf.RoundToInt(originalMagicDefense * magicDefenseMultiplier);
             Speed = Mathf.RoundToInt(originalSpeed * speedMultiplier);
             CriticalRate = originalCriticalRate * criticalMultiplier;
+
+            // エンチャント後のステータスを売却価格にも反映する。
+            RecalculatePriceFromStats();
         }
     }
 }

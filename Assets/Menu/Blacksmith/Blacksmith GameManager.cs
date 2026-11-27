@@ -217,8 +217,8 @@ public class BlacksmithGameManager : MonoBehaviour
 
         SetStatus(weapon, material1, material2, score);
         // ステータス合計を武器の価格として設定する。
-        weapon.Price = Mathf.CeilToInt(weapon.MaxHp + weapon.MaxMp + weapon.Attack + weapon.Magic +
-            weapon.Defense + weapon.MagicDefense + weapon.Speed + weapon.CriticalRate);
+        // 武器データ共通の計算で、生成時ステータスを価格へ反映する。
+        weapon.RecalculatePriceFromStats();
 
         // エンチャント解除時に戻せるよう、作成時点の武器能力値を保存する。
         weapon.SaveOriginalStats();
